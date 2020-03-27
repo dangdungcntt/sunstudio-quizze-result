@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes Result</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3 text-center">
+                <form action="" method="post">
+                    <h3>Enter Quizze ID</h3>
+                    
+                    <input type="text" class="form-control" name="quizze_id" value="{{quizzeInfo._id}}" placeholder="Quizze ID here" required>
+                    <br>
+                    <button class="btn btn-primary">View Result</button>
+                </form>
+            </div>
+        </div>
+
+        {% if questions %}
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3 class="text-center mb-4">{{quizzeInfo.title}}</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Question</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question in questions %}
+                                    {% set parentLoop = loop %}
+                                    {% for option in question.options %}
+                                        <tr>
+                                            {% if loop.index == 1 %}
+                                                <td rowspan="{{question.options | length}}">{{ parentLoop.index }}</td>
+                                                <td rowspan="{{question.options | length}}">{{ question.title }}</td>
+                                            {% endif %}
+                                            <td class="{{ "table-success" if questionResults[question._id] == option._id }}">{{ option.content }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
