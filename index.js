@@ -2,26 +2,21 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const expressNunjucks = require('express-nunjucks');
+const nunjucks  = require('nunjucks');
 
 const QuizzeApi = require('./QuizzeApi');
 
 const app = express();
 
-const isDev = app.get('env') === 'development';
-
-console.log(isDev);
+nunjucks.configure(['views/'], { // set folders with templates
+    autoescape: true, 
+    express: app
+});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'twig');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-expressNunjucks(app, {
-    watch: isDev,
-    noCache: isDev
-});
-
 
 app.get('/', (req, res) => {
     return res.render('index');
